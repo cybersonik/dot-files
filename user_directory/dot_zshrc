@@ -1,0 +1,28 @@
+# env variables
+export EDITOR="code -w"
+export PATH="${HOME}/.gem/ruby/2.6.0/bin:${PATH}"
+# Puts homebrew binaries at the front of the system PATH
+export PATH="$(brew --prefix)/bin:${PATH}"
+
+
+# completions
+fpath=(~/.zsh $fpath)
+
+if type brew &> /dev/null; then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+  autoload -Uz compinit
+  compinit
+fi
+
+
+# aliases
+# git shortcuts
+alias update="git fetch --prune && git pull"
+alias update_to_main="git checkout main && git fetch --prune && git pull && git checkout -"
+
+
+# prompt
+if type oh-my-posh &> /dev/null; then
+  eval "$(oh-my-posh init zsh --config ~/.current.omp.json)"
+fi
