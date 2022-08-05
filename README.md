@@ -21,7 +21,7 @@ See [Homebrew](https://brew.sh) for more information.
 
 Visit [Nerd Fonts](https://www.nerdfonts.com/) for available fonts.
 
-The *Ocean (Meslo)* Terminal Profile uses `Meslo LG L Regular Nerd Font Complete Mono 14` so I recommend installing at least this font. (Also, consider installing [Cascadia Code](https://github.com/microsoft/cascadia-code) for use in your editor.)
+The *Ocean (Meslo)* Terminal Profile uses `Meslo LG L Regular Nerd Font Complete Mono 14` so I recommend installing at least this font. (Also, consider installing [Cascadia Code](https://github.com/microsoft/cascadia-code) for use in your favorite editor.)
 
 ### Oh My Posh for customized prompt
 
@@ -31,4 +31,4 @@ Install with the following command:
 brew install jandedobbeleer/oh-my-posh/oh-my-posh
 ```
 
-See [Oh My Posh](https://ohmyposh.dev/docs/installation/macos#installation) for more information.
+See [Oh My Posh](https://ohmyposh.dev/docs/installation/macos#installation) for how to customize and more information.
