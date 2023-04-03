@@ -17,6 +17,10 @@ fi
 
 
 # aliases
+alias l="ls -l@"
+alias ll="ls -al@"
+alias ping="ping -c 3"
+alias power="system_profiler SPPowerDataType"
 # git shortcuts
 alias update="git fetch --prune && git pull"
 alias update_to_main="git checkout main && git fetch --prune && git pull && git checkout -"
