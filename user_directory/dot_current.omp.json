@@ -26,8 +26,11 @@
           "properties": {
             "folder_icon": "\uf115",
             "folder_separator_icon": " \ue0b1 ",
-            "home_icon": "\uf7db",
-            "style": "agnoster"
+            "home_icon": "\udb80\udedc",
+            "style": "agnoster",
+            "mapped_locations": {
+              "~/Developer": "\udb82\udcea"
+            }
           },
           "style": "powerline",
           "template": " {{ .Path }} ",
