@@ -32,3 +32,13 @@ brew install jandedobbeleer/oh-my-posh/oh-my-posh
 ```
 
 See [Oh My Posh](https://ohmyposh.dev/docs/installation/macos#installation) for how to customize and more information.
+
+## Required Development Dependencies
+
+### VS Code Ruby development
+
+Install the following Ruby gems to enable debugging in VS Code
+
+``` zsh
+gem install debug
+```
