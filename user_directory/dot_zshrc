@@ -1,8 +1,16 @@
 # env variables
 export EDITOR="code -w"
-export PATH="${HOME}/.gem/ruby/2.6.0/bin:${PATH}"
+export GPG_TTY=$(tty)
 # Puts homebrew binaries at the front of the system PATH
 export PATH="$(brew --prefix)/bin:${PATH}"
+export PATH="${HOME}/.gem/ruby/2.6.0/bin:${PATH}"
+export PATH="node_modules/.bin:${PATH}"
+# Add NVM to PATH
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
 
 
 # completions
@@ -15,9 +23,21 @@ if type brew &> /dev/null; then
   compinit
 fi
 
+# 1Password completions and setup
+if type op &> /dev/null; then
+  source ~/.config/op/plugins.sh
+
+  eval "$(op completion zsh)"; compdef _op op
+fi
+
 
 # aliases
+alias l="ls -l@"
+alias ll="ls -al@"
+alias ping="ping -c 3"
+alias power="system_profiler SPPowerDataType"
 # git shortcuts
+alias pinentry='pinentry-mac'
 alias update="git fetch --prune && git pull"
 alias update_to_main="git checkout main && git fetch --prune && git pull && git checkout -"
 
@@ -26,3 +46,47 @@ alias update_to_main="git checkout main && git fetch --prune && git pull && git 
 if type oh-my-posh &> /dev/null; then
   eval "$(oh-my-posh init zsh --config ~/.current.omp.json)"
 fi
+
+
+# functions
+change_author_email() {
+  if [[ -z "$1" ]]; then
+    echo "error: no git author email provided"
+    return -1
+  fi
+
+  NEW_EMAIL="$1"
+  echo "debug: NEW_EMAIL=$NEW_EMAIL"
+
+  PREVIOUS_EMAIL=`git config user.email`
+  UPDATE_GIT_CONFIG=0
+  if [[ -n "$2" ]]; then
+    echo "debug: PREVIOUS_EMAIL=$2"
+    PREVIOUS_EMAIL="$2"
+
+    UPDATE_GIT_CONFIG="Yes"
+  fi
+
+  if [[ "$PREVIOUS_EMAIL" = "$NEW_EMAIL" ]]; then
+    echo "warning: new git author email matches the current one"
+    return -2
+  fi
+
+  COMMIT_FILTER="
+    if [ \"\$GIT_AUTHOR_EMAIL\" = \"${PREVIOUS_EMAIL}\" ] || [ \"\$GIT_COMMITTER_EMAIL\" = \"${PREVIOUS_EMAIL}\" ];
+    then
+      GIT_AUTHOR_EMAIL=\"${NEW_EMAIL}\";
+      GIT_COMMITTER_EMAIL=\"${NEW_EMAIL}\";
+      git commit-tree \"\$@\";
+    else
+      git commit-tree \"\$@\";
+    fi"
+  TRIMMED_COMMIT_FILTER=`echo "$COMMIT_FILTER" | tr -d '\n' | tr -s ' '`
+  export FILTER_BRANCH_SQUELCH_WARNING=1
+  git filter-branch -f --commit-filter "$TRIMMED_COMMIT_FILTER" HEAD
+
+  # if [[ -n "$UPDATE_GIT_CONFIG" ]]; then
+  #   echo "debug: update git config user.email"
+  #   git config --local user.email "$NEW_EMAIL"
+  # fi
+}
